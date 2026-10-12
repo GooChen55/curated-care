@@ -1,0 +1,10 @@
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /build
+COPY services/commerce/ .
+RUN mvn -q -DskipTests package
+FROM eclipse-temurin:17-jre
+WORKDIR /workspace
+COPY --from=build /build/target/commerce-1.0.0.jar /workspace/commerce.jar
+ENV APP_HOST=0.0.0.0
+EXPOSE 19081
+ENTRYPOINT ["java","-jar","/workspace/commerce.jar"]

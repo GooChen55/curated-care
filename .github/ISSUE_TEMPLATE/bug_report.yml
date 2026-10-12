@@ -1,0 +1,23 @@
+name: 缺陷报告
+description: 提交可以复现的功能或运行问题
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 请提供操作步骤与版本，不要包含密钥或个人数据。
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: 预期行为与实际结果
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境与脱敏日志
+      description: 操作系统、Java/Python/Node 版本，本地或 Docker 模式。

@@ -1,0 +1,13 @@
+[project]
+name = "curated-care-assistant"
+version = "1.0.0"
+description = "Curated Care assistant service"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.136.1",
+    "httpx==0.28.1",
+    "pydantic==2.11.10",
+    "uvicorn==0.46.0",
+    "python-dotenv==1.1.0",
+    "PyYAML==6.0.3",
+]

@@ -1,0 +1,38 @@
+slots:
+  order_number:
+    type: text
+    label: 订单号
+    description: 当前登录用户的订单号
+  refund_reason:
+    type: text
+    label: 退款原因
+    description: 用户说明的退款原因
+flows:
+  refund_request:
+    name: 退款申请
+    description: 收集订单、退款原因，并经用户明确确认后创建申请
+    steps:
+      - id: start
+        type: start
+        next: order_number
+      - id: order_number
+        type: collect
+        slot_name: order_number
+        response:
+          text: 请点击订单卡片，或输入需要退款的订单号。
+        next: refund_reason
+      - id: refund_reason
+        type: collect
+        slot_name: refund_reason
+        response:
+          text: 请告诉我退款原因。申请提交前还会请你确认。
+        next: confirmation
+      - id: confirmation
+        type: action
+        action: request_confirmation
+        args:
+          text: 请回复“确认提交”创建退款申请，或回复“取消退款”。
+        next: end
+      - id: end
+        type: end
+        next: []

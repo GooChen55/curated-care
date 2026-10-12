@@ -1,0 +1,51 @@
+name: zhifu
+services:
+  commerce:
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.commerce
+    environment:
+      APP_HOST: 0.0.0.0
+      DB_URL: jdbc:h2:file:/workspace/data/commerce;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+      DEMO_MODE: ${DEMO_MODE:-true}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:-Demo12345!}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin12345!}
+      SERVICE_TOKEN: ${SERVICE_TOKEN:-local-development-only}
+      ASSISTANT_URL: http://assistant:8000
+      KNOWLEDGE_URL: http://knowledge:8000
+    volumes: [commerce-data:/workspace/data]
+    depends_on: [assistant, knowledge]
+  assistant:
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.python
+      args: {SERVICE: assistant}
+    environment:
+      COMMERCE_URL: http://commerce:19081
+      KNOWLEDGE_URL: http://knowledge:8000
+      SERVICE_TOKEN: ${SERVICE_TOKEN:-local-development-only}
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-qwen-plus}
+    volumes: [assistant-data:/workspace/data]
+  knowledge:
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.python
+      args: {SERVICE: knowledge}
+    environment:
+      SERVICE_TOKEN: ${SERVICE_TOKEN:-local-development-only}
+      EMBEDDING_BASE_URL: ${EMBEDDING_BASE_URL:-}
+      EMBEDDING_API_KEY: ${EMBEDDING_API_KEY:-}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-text-embedding-v4}
+    volumes: [knowledge-data:/workspace/data]
+  storefront:
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.frontend
+    ports: ["127.0.0.1:${WEB_PORT:-19080}:80"]
+    depends_on: [commerce]
+volumes:
+  commerce-data:
+  assistant-data:
+  knowledge-data:

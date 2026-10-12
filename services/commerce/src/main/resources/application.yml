@@ -1,0 +1,20 @@
+server:
+  address: ${APP_HOST:127.0.0.1}
+  port: ${COMMERCE_PORT:19081}
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:h2:file:./data/commerce;MODE=MySQL;DATABASE_TO_LOWER=TRUE;AUTO_SERVER=TRUE}
+    username: ${DB_USER:sa}
+    password: ${DB_PASSWORD:}
+  sql:
+    init:
+      mode: always
+  jackson:
+    time-zone: Asia/Shanghai
+care:
+  demo: ${DEMO_MODE:true}
+  demo-password: ${DEMO_PASSWORD:Demo12345!}
+  admin-password: ${ADMIN_PASSWORD:Admin12345!}
+  assistant-url: ${ASSISTANT_URL:http://127.0.0.1:19082}
+  knowledge-url: ${KNOWLEDGE_URL:http://127.0.0.1:19083}
+  service-token: ${SERVICE_TOKEN:local-development-only}

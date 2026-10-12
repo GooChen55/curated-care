@@ -1,0 +1,11 @@
+FROM python:3.12-slim
+WORKDIR /workspace
+COPY requirements.runtime.txt .
+RUN pip install --no-cache-dir -r requirements.runtime.txt
+ARG SERVICE
+COPY services/${SERVICE}/ /workspace/services/${SERVICE}/
+COPY data/knowledge/ /workspace/data/knowledge/
+WORKDIR /workspace/services/${SERVICE}
+ENV PYTHONUNBUFFERED=1
+ENV SERVICE_MODULE=curated_${SERVICE}.api:app
+CMD ["sh","-c","exec python -m uvicorn \"$SERVICE_MODULE\" --host 0.0.0.0 --port 8000"]

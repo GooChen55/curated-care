@@ -1,0 +1,17 @@
+name: 功能建议
+description: 描述业务场景和希望改进的行为
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: scenario
+    attributes:
+      label: 业务场景与问题
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议行为与验收方式
+    validations:
+      required: true
